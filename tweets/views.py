@@ -1,14 +1,38 @@
 import random
+from django.conf import settings
 from django.http import HttpResponse, Http404, JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from django.utils.http import is_safe_url
 
+from .forms import TweetForm
 from .models import Tweet
+
+ALLOWED_HOSTS = settings.ALLOWED_HOSTS
 
 # Create your views here.
 def home_view(request, *args, **kwargs):
-    print(args, kwargs)
+    # print(args, kwargs)
     # return HttpResponse("<h1>Hello World</h1>")
     return render(request, "pages/home.html", context = {}, status = 200)
+
+def tweet_create_view(request, *args, **kwargs):
+    form = TweetForm(request.POST or None)
+    # print('post data is',request.POST)
+    next_url = request.POST.get("next") or None
+    # print("next url", next_url)
+    if form.is_valid:
+        obj = form.save(commit=False) 
+        #Here with commit = False we are not saving the form in database
+        #In this case, it’s up to you to call save() on the resulting model instance. 
+        # This is useful if you want to do custom processing on the object before saving it, 
+        # or if you want to use one of the specialized model saving options. commit is True by default.
+
+        #do other form related things
+        obj.save()
+        if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
+            return redirect(next_url)
+        form = TweetForm()
+    return render(request, 'components/forms.html', context={'form': form})
 
 def tweet_list_view(request, *args, **kwargs):
     """

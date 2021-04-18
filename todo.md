@@ -4,6 +4,7 @@
    -> Images
    ->Deleting
    ->Retweeting
+   ->Liking
 2. Users
    -> Register
    -> Login

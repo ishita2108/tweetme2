@@ -16,11 +16,12 @@ def home_view(request, *args, **kwargs):
     return render(request, "pages/home.html", context = {}, status = 200)
 
 def tweet_create_view(request, *args, **kwargs):
+    # print("ajax",request.is_ajax())
     form = TweetForm(request.POST or None)
     # print('post data is',request.POST)
     next_url = request.POST.get("next") or None
     # print("next url", next_url)
-    if form.is_valid:
+    if form.is_valid():
         obj = form.save(commit=False) 
         #Here with commit = False we are not saving the form in database
         #In this case, it’s up to you to call save() on the resulting model instance. 
@@ -29,9 +30,14 @@ def tweet_create_view(request, *args, **kwargs):
 
         #do other form related things
         obj.save()
+        if request.is_ajax():
+            return JsonResponse(obj.serialize(), status=201)  #201 == created items
         if next_url != None and is_safe_url(next_url, ALLOWED_HOSTS):
             return redirect(next_url)
         form = TweetForm()
+    if form.errors:
+        if request.is_ajax():
+            return JsonResponse(form.errors, status=400)
     return render(request, 'components/forms.html', context={'form': form})
 
 def tweet_list_view(request, *args, **kwargs):
@@ -41,7 +47,7 @@ def tweet_list_view(request, *args, **kwargs):
     return json data
     """
     qs = Tweet.objects.all()
-    tweet_list = [{"id": x.id, "content":x.content, "likes":random.randint(0,122) } for x in qs ]
+    tweet_list = [x.serialize() for x in qs ]
     data = { 
         "isUser" : False,
         "response": tweet_list,

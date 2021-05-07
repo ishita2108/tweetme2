@@ -204,15 +204,15 @@
     }
 
     function likeBtn(tweet){
-        return "<button class='btn btn-outline-info btn-small' onclick = handleDidLike(" + 
+        return "<button class='btn btn-outline-info btn-small' onclick = handleTweetActionBtn(" + 
         tweet.id + "," + tweet.likes + ",'like')>" + tweet.likes + "Like</button>"
     }
     function UnlikeBtn(tweet) {
-            return "<button class='btn btn-outline-danger btn-small' onclick = handleDidLike(" +
+            return "<button class='btn btn-outline-danger btn-small' onclick = handleTweetActionBtn(" +
                 tweet.id + "," + tweet.likes + ",'unlike')>UnLike</button>"
         }
     function RetweetBtn(tweet) {
-            return "<button class='btn btn-outline-success btn-small' onclick = handleDidLike(" +
+            return "<button class='btn btn-outline-success btn-small' onclick = handleTweetActionBtn(" +
                 tweet.id + "," + tweet.likes + ",'retweet')>Retweet</button>"
         }
 

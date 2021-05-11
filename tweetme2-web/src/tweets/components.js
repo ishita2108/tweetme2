@@ -10,13 +10,13 @@ export function TweetsComponent(props){
         // console.log(textAreaRef.current.value)
         const newVal = textAreaRef.current.value
         // console.log(newVal)
-        let tempNetTweets = [...newTweets]
-        tempNetTweets.unshift({
+        let tempNewTweets = [...newTweets]
+        tempNewTweets.unshift({
             content : newVal,
             likes : 0,
             id: 12321
         })
-        setNewTweets(tempNetTweets)
+        setNewTweets(tempNewTweets)
         textAreaRef.current.value = ''
     }
     return <div className={props.className}> 
@@ -58,7 +58,7 @@ export function TweetsList(props){
     //do my lookup
     loadTweets(myCallback)
     
-  }, [])
+  }, [tweetsInit])
   return tweets.map((item, index)=>{
         return <Tweet tweet={item}  className="my-5 py-5 border bg-white text-dark" key ={`${index}-{item.id}`}/>
         })

@@ -6,7 +6,7 @@ export function ActionBtn(props){
    const likes = tweet.likes ? tweet.likes : 0
   //  const [likes, setLikes] = useState()
   //  const [userLike, setUserLike] = useState(tweet.userLike === true ? true : false)
-   const className= props.className ?props.className : 'btn btn-info btn-small'
+   const className= props.className ?props.className : 'btn btn-primary btn-small'
    const actionDisplay = action.display ? action.display: 'Action'
    const display = action.type === 'like' ? `${likes} ${actionDisplay}` : actionDisplay
 

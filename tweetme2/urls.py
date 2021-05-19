@@ -18,26 +18,33 @@ from django.urls import path, re_path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from django.views.generic import TemplateView
+from  accounts.views import (
+    login_view,
+    logout_view,
+    register_view
+)
 
 from tweets.views import (
-    local_tweets_detail_view, 
-    local_tweets_list_view,
-    local_tweets_profile_view,
+    tweets_detail_view, 
+    tweets_list_view,
     
 )
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('',  local_tweets_list_view),
-    path('<int:tweet_id>',  local_tweets_detail_view),
-    path('profile/<str:username>',  local_tweets_profile_view),
+    path('', tweets_list_view),
+    path('login/', login_view),
+    path('logout/', logout_view),
+    path('register/', register_view),
+    path('<int:tweet_id>',tweets_detail_view),
+    re_path(r'profiles?/',include('profiles.urls')),
     # path('react/', TemplateView.as_view(template_name ="react_via_dj.html")),
     # path('tweets/<int:tweet_id>', tweet_detail_view),
     # path('tweets', tweet_list_view),
     # path('create-tweet', tweet_create_view),
     # path('api/tweets/<int:tweet_id>/delete', tweet_delete_view),
     # path('api/tweets/action', tweet_action_view)
-    path('api/tweets/', include('tweets.urls'))
+    path('api/tweets/', include('tweets.api.urls'))
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

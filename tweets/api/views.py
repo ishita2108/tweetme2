@@ -95,6 +95,42 @@ def tweet_action_view(request,*args, **kwargs):
     return Response({}, status=200)
 
 
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def tweet_feed_view(request, *args, **kwargs):
+    user = request.user
+    qs = Tweet.objects.feed(user)
+    serializer = TweetSerializer(qs, many=True)
+    return Response(serializer.data, status=200)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 def tweet_create_view_pure_django(request, *args, **kwargs):
     '''
     REST API Create View -> DRF
